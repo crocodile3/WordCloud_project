@@ -1,0 +1,46 @@
+    所谓“词云”就是对网络文本中出现频率较高的“关键词”予以视觉上的突出，形成“关键词云层”或“关键词渲染”，从而过滤掉大量的文本信息，使浏览网页者只要一眼扫过文本就可以领略文本的主旨。-来自百度百科的解释。
+    本文运用python简单地实现词云。
+    第一步：所需包的安装
+    首先安装wordcloud包(顾名思义就是词云的包)和matplotlib包（画图的包），jieba包（用于处理中文分词的包）
+pip install wordcloud
+pip install matplotlib
+pip install jieba
+     第二步：代码实现
+# -*- coding:utf-8 -*-
+#使用的是python2对中文处理需要注意编码问题，将系统编码方式设置为“utf-8”
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
+#导入项目所需要的包
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
+import jieba
+#读取生成词云内容的文件源
+content= open('/home/python/Desktop/data.txt').read()
+#运用jieba分词，生成字符串
+wordlist_cut = jieba.cut(content,cut_all=True)
+wordlist = " ".join(wordlist_cut)
+cloud = WordCloud(
+    # 设置字体，不指定不能处理中文字体
+    font_path="HYQiHei-25J.ttf",
+    # 设置背景色
+    background_color='green',
+    # 设置词云形状
+    mask=color_mask,
+    # 允许最大词汇
+    max_words=50000,
+    # 最大号字体
+    max_font_size=40)
+#生成词云
+my_wordcloud = cloud.generate(wordlist)
+plt.imshow(my_wordcloud)
+plt.axis('off')
+plt.show()
+ 补充：
+第一点：中文字体显示问题    
+ 代码实现需要注意的实现，需要更该wordcloud的字体，起默认字体为"DroidSansMono.ttf"，不支持中文，生成的图片会乱码，需要更改字体，将可用的字体的‘.ttf’格式文件下载到当前目录下，并且设置字体后，就能够显示出中文字体了。
+第二点：worldcloud原理：
+第一步：对文本数据进行分词；
+第二步：计算每个词在文本中出现的频率，生成哈希表；
+第三步：根据单词的频率的比重生成图片的布局；
+第四步：将词按照对应的频率在布局图上生成图片；
